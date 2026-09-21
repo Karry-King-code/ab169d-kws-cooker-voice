@@ -1,0 +1,45 @@
+#include "include.h"
+
+#if (LANG_SELECT == LANG_EN_ZH)
+const res_addr_t mul_lang_tbl[2][IDX_MAX_MP3] = {
+    {
+        [IDX_LANGUAGE_MP3   ] = {&RES_BUF_EN_LANGUAGE_MP3,      &RES_LEN_EN_LANGUAGE_MP3},
+        [IDX_LOW_BATTERY_MP3] = {&RES_BUF_EN_LOW_BATTERY_MP3,   &RES_LEN_EN_LOW_BATTERY_MP3},
+//        [IDX_POWERON_MP3    ] = {&RES_BUF_EN_POWERON_MP3,       &RES_LEN_EN_POWERON_MP3},
+        [IDX_POWEROFF_MP3   ] = {&RES_BUF_EN_POWEROFF_MP3,      &RES_LEN_EN_POWEROFF_MP3},
+        [IDX_MAX_VOL_MP3    ] = {&RES_BUF_EN_MAX_VOL_MP3,       &RES_LEN_EN_MAX_VOL_MP3},
+        [IDX_SDCARD_MODE_MP3] = {&RES_BUF_EN_SDCARD_MODE_MP3,   &RES_LEN_EN_SDCARD_MODE_MP3},
+        [IDX_USB_MODE_MP3   ] = {&RES_BUF_EN_USB_MODE_MP3,      &RES_LEN_EN_USB_MODE_MP3},
+        [IDX_AUX_MODE_MP3   ] = {&RES_BUF_EN_AUX_MODE_MP3,      &RES_LEN_EN_AUX_MODE_MP3},
+        [IDX_CLOCK_MODE_MP3 ] = {&RES_BUF_EN_CLOCK_MODE_MP3,    &RES_LEN_EN_CLOCK_MODE_MP3},
+        [IDX_FM_MODE_MP3    ] = {&RES_BUF_EN_FM_MODE_MP3,       &RES_LEN_EN_FM_MODE_MP3},
+        [IDX_SPK_MODE_MP3   ] = {&RES_BUF_EN_SPK_MODE_MP3,      &RES_LEN_EN_SPK_MODE_MP3},
+        [IDX_PC_MODE_MP3    ] = {&RES_BUF_EN_PC_MODE_MP3,       &RES_LEN_EN_PC_MODE_MP3},
+
+    },
+    {
+        [IDX_LANGUAGE_MP3   ] = {&RES_BUF_ZH_LANGUAGE_MP3,     &RES_LEN_ZH_LANGUAGE_MP3},
+        [IDX_LOW_BATTERY_MP3] = {&RES_BUF_ZH_LOW_BATTERY_MP3,  &RES_LEN_ZH_LOW_BATTERY_MP3},
+//        [IDX_POWERON_MP3    ] = {&RES_BUF_ZH_POWERON_MP3,      &RES_LEN_ZH_POWERON_MP3},
+        [IDX_POWEROFF_MP3   ] = {&RES_BUF_ZH_POWEROFF_MP3,     &RES_LEN_ZH_POWEROFF_MP3},
+        [IDX_MAX_VOL_MP3    ] = {&RES_BUF_ZH_MAX_VOL_MP3,      &RES_LEN_ZH_MAX_VOL_MP3},
+        [IDX_SDCARD_MODE_MP3] = {&RES_BUF_ZH_SDCARD_MODE_MP3,  &RES_LEN_ZH_SDCARD_MODE_MP3},
+        [IDX_USB_MODE_MP3   ] = {&RES_BUF_ZH_USB_MODE_MP3,     &RES_LEN_ZH_USB_MODE_MP3},
+        [IDX_AUX_MODE_MP3   ] = {&RES_BUF_ZH_AUX_MODE_MP3,     &RES_LEN_ZH_AUX_MODE_MP3},
+        [IDX_CLOCK_MODE_MP3 ] = {&RES_BUF_ZH_CLOCK_MODE_MP3,   &RES_LEN_ZH_CLOCK_MODE_MP3},
+        [IDX_FM_MODE_MP3    ] = {&RES_BUF_ZH_FM_MODE_MP3,      &RES_LEN_ZH_FM_MODE_MP3},
+        [IDX_SPK_MODE_MP3   ] = {&RES_BUF_ZH_SPK_MODE_MP3,     &RES_LEN_ZH_SPK_MODE_MP3},
+        [IDX_PC_MODE_MP3    ] = {&RES_BUF_ZH_PC_MODE_MP3,      &RES_LEN_ZH_PC_MODE_MP3},
+    },
+};
+
+void multi_lang_init(uint lang_id)
+{
+}
+
+const res_addr_t *res_get_ring_num(u8 index)
+{
+    return &mul_lang_tbl[sys_cb.lang_id][index+IDX_NUM_0_MP3];
+}
+
+#endif //#if (LANG_SELECT == LANG_EN_ZH)

@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="app-kws" />
+		<Option pch_mode="2" />
+		<Option compiler="riscv32" />
+		<Build>
+			<Target title="Debug">
+				<Option output="Output/bin/app.rv32" prefix_auto="1" extension_auto="0" />
+				<Option object_output="Output/obj/" />
+				<Option type="1" />
+				<Option compiler="riscv32" />
+				<Compiler>
+					<Add directory="../../platform/modules/auth" />
+					<Add directory="../../platform/modules/zbit_kws" />
+				</Compiler>
+				<Linker>
+					<Add directory="../../platform/modules/auth" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Os" />
+			<Add option="-Wall" />
+			<Add option="-march=rv32imac" />
+			<Add option="-ffunction-sections" />
+			<Add option="-fdata-sections" />
+			<Add option="-msave-restore" />
+			<Add option="-mjump-tables-in-text" />
+			<Add directory="." />
+			<Add directory="display" />
+			<Add directory="functions" />
+			<Add directory="message" />
+			<Add directory="port" />
+			<Add directory="plugin" />
+			<Add directory="../../platform/header" />
+			<Add directory="../../platform/libs" />
+			<Add directory="../../platform/bsp" />
+			<Add directory="../../platform/functions" />
+			<Add directory="../../platform/gui" />
+			<Add directory="../../platform/modules" />
+			<Add directory="../../platform/modules/ws" />
+			<Add directory="../../../libs/platform/cm" />
+		</Compiler>
+		<Linker>
+			<Add option="-T$(TARGET_OBJECT_DIR)ram.o" />
+			<Add option="--gc-sections" />
+			<Add option="-Map=Output\bin\map.txt" />
+			<Add library="libplatform" />
+			<Add library="libcodecs" />
+			<Add library="libdrivers" />
+			<Add library="../../platform/modules/zbit_kws/libkws_AB169_634_180k_V3.1.0_cn_wd81_108_83e389a_20260817_154457.a" />
+			<Add library="libc" />
+			<Add library="libgcc" />
+			<Add directory="../../platform/libs" />
+		</Linker>
+		<ExtraCommands>
+			<Add before="Output\bin\prebuild.bat $(PROJECT_NAME)" />
+			<Add after="Output\bin\postbuild.bat $(PROJECT_NAME)" />
+		</ExtraCommands>
+		<Unit filename="../../platform/bsp/bsp.h" />
+		<Unit filename="../../platform/bsp/bsp_asr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_asr.h" />
+		<Unit filename="../../platform/bsp/bsp_audio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_audio.h" />
+		<Unit filename="../../platform/bsp/bsp_clk.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_clk.h" />
+		<Unit filename="../../platform/bsp/bsp_cm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_code.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_code.h" />
+		<Unit filename="../../platform/bsp/bsp_dac.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_dac.h" />
+		<Unit filename="../../platform/bsp/bsp_ext_dump.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_freqdet.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_freqdet.h" />
+		<Unit filename="../../platform/bsp/bsp_huart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_huart.h" />
+		<Unit filename="../../platform/bsp/bsp_i2c.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_i2c.h" />
+		<Unit filename="../../platform/bsp/bsp_ir.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_ir.h" />
+		<Unit filename="../../platform/bsp/bsp_music.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_music.h" />
+		<Unit filename="../../platform/bsp/bsp_param.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_param.h" />
+		<Unit filename="../../platform/bsp/bsp_rtc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_rtc.h" />
+		<Unit filename="../../platform/bsp/bsp_saradc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_saradc.h" />
+		<Unit filename="../../platform/bsp/bsp_sdadc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_sdadc.h" />
+		<Unit filename="../../platform/bsp/bsp_spi_audio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_spi_audio.h" />
+		<Unit filename="../../platform/bsp/bsp_sys.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_sys.h" />
+		<Unit filename="../../platform/bsp/bsp_timer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_timer.h" />
+		<Unit filename="../../platform/bsp/bsp_uart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/bsp/bsp_uart.h" />
+		<Unit filename="../../platform/gui/gui.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/gui/gui.h" />
+		<Unit filename="../../platform/gui/ledseg/ledseg_7p7s.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/gui/ledseg/ledseg_7p7s.h" />
+		<Unit filename="../../platform/gui/ledseg/ledseg_common.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/gui/ledseg/ledseg_common.h" />
+		<Unit filename="../../platform/header/clib.h" />
+		<Unit filename="../../platform/header/config_define.h" />
+		<Unit filename="../../platform/header/config_extra.h" />
+		<Unit filename="../../platform/header/global.h" />
+		<Unit filename="../../platform/header/include.h" />
+		<Unit filename="../../platform/header/io_def.h" />
+		<Unit filename="../../platform/header/macro.h" />
+		<Unit filename="../../platform/header/s_common.h" />
+		<Unit filename="../../platform/header/sfr.h" />
+		<Unit filename="../../platform/header/typedef.h" />
+		<Unit filename="../../platform/libs/api.h" />
+		<Unit filename="../../platform/libs/api_buffer.h" />
+		<Unit filename="../../platform/libs/api_cm.h" />
+		<Unit filename="../../platform/libs/api_dac.h" />
+		<Unit filename="../../platform/libs/api_device.h" />
+		<Unit filename="../../platform/libs/api_fs.h" />
+		<Unit filename="../../platform/libs/api_gpio.h" />
+		<Unit filename="../../platform/libs/api_key.h" />
+		<Unit filename="../../platform/libs/api_math.h" />
+		<Unit filename="../../platform/libs/api_msg.h" />
+		<Unit filename="../../platform/libs/api_music.h" />
+		<Unit filename="../../platform/libs/api_nr.h" />
+		<Unit filename="../../platform/libs/api_pwr.h" />
+		<Unit filename="../../platform/libs/api_rtc.h" />
+		<Unit filename="../../platform/libs/api_saradc.h" />
+		<Unit filename="../../platform/libs/api_sd.h" />
+		<Unit filename="../../platform/libs/api_spiflash_ex.h" />
+		<Unit filename="../../platform/libs/api_sys.h" />
+		<Unit filename="../../platform/libs/api_sysclk.h" />
+		<Unit filename="../../platform/libs/api_update.h" />
+		<Unit filename="../../platform/libs/strong_symbol.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/auth/sha256.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/auth/sha256.h" />
+		<Unit filename="../../platform/modules/esbc/esbc_tran.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/esbc/esbc_tran.h" />
+		<Unit filename="../../platform/modules/key/key_scan.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/key/key_scan.h" />
+		<Unit filename="../../platform/modules/key/mtrixkey.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/key/mtrixkey.h" />
+		<Unit filename="../../platform/modules/key/tkey.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/key/tkey.h" />
+		<Unit filename="../../platform/modules/led/led.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/led/led.h" />
+		<Unit filename="../../platform/modules/led/spi_led.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/led/spi_led.h" />
+		<Unit filename="../../platform/modules/modules.h" />
+		<Unit filename="../../platform/modules/spiflash/spiflash1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/spiflash/spiflash1.h" />
+		<Unit filename="../../platform/modules/spiflash/spiflash1_music_bin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/zbit_kws/kws_task.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../platform/modules/zbit_kws/kws_task.h" />
+		<Unit filename="Output/bin/app.xm">
+			<Option compile="1" />
+			<Option compiler="riscv32" use="1" buildCommand="$compiler $options $includes -E -P -x c -c $file -o $(TARGET_OUTPUT_DIR)appxm.o" />
+		</Unit>
+		<Unit filename="Output/bin/download.xm">
+			<Option compile="1" />
+			<Option compiler="riscv32" use="1" buildCommand=" " />
+		</Unit>
+		<Unit filename="Output/bin/res.xm">
+			<Option compile="1" />
+			<Option compiler="riscv32" use="1" buildCommand=" " />
+		</Unit>
+		<Unit filename="Output/bin/xcfg.xm">
+			<Option compile="1" />
+			<Option compiler="riscv32" use="1" buildCommand=" " />
+		</Unit>
+		<Unit filename="config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="config.h" />
+		<Unit filename="display/display_idle.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="display/ledseg/display_ledseg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="display/ledseg/display_ledseg.h" />
+		<Unit filename="functions/func.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="functions/func.h" />
+		<Unit filename="functions/func_exspiflash_music.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="functions/func_exspiflash_music.h" />
+		<Unit filename="functions/func_idle.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="functions/func_idle.h" />
+		<Unit filename="functions/func_lowpwr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="functions/func_lowpwr.h" />
+		<Unit filename="functions/func_music.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="functions/func_music.h" />
+		<Unit filename="functions/func_speaker.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="functions/func_speaker.h" />
+		<Unit filename="functions/sfunc_record.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="functions/sfunc_record.h" />
+		<Unit filename="functions/sfunc_record_play.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="functions/sfunc_record_play.h" />
+		<Unit filename="wake_ctrl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="key_ctrl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="key_ctrl.h" />
+		<Unit filename="led_ctrl.h" />
+		<Unit filename="led_yw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sound_res.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="uart_cmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sound_res.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="message/msg_exspiflash_music.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="message/msg_idle.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="message/msg_record.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="message/msg_speaker.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="plugin/eq_table.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="plugin/multi_lang.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="plugin/multi_lang.h" />
+		<Unit filename="plugin/plugin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="plugin/plugin.h" />
+		<Unit filename="port/port_init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="port/port_init.h" />
+		<Unit filename="port/port_ir.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="port/port_key.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="port/port_led.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="port/port_led.h" />
+		<Unit filename="port/port_ledseg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="port/port_mute.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="port/port_pwm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="port/port_pwm.h" />
+		<Unit filename="port/port_sd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ram.ld">
+			<Option compile="1" />
+			<Option compiler="riscv32" use="1" buildCommand="$compiler $options $includes -E -P -x c -c $file -o $(TARGET_OBJECT_DIR)ram.o" />
+		</Unit>
+		<Unit filename="res.h" />
+		<Unit filename="s_start.S" />
+		<Unit filename="xcfg.h" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AB169D 芯片资源报告</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f5f5f5; margin: 0; padding: 24px; color: #1a1a1a;
+  }
+  .container { max-width: 1120px; margin: 0 auto; }
+  .header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    background: #fff; padding: 20px 28px; border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08); margin-bottom: 20px; flex-wrap: wrap; gap: 8px;
+  }
+  .header h1 { margin: 0; font-size: 22px; font-weight: 600; }
+  .header .meta { font-size: 13px; color: #666; }
+  .header .strategy { font-size: 12px; color: #888; background: #f0f0f0; padding: 3px 10px; border-radius: 20px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .card {
+    background: #fff; border-radius: 10px; padding: 16px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .card .label { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: #888; margin-bottom: 4px; }
+  .card .value { font-size: 18px; font-weight: 600; }
+  .card .sub { font-size: 12px; color: #666; margin-top: 2px; }
+
+  .correction-banner {
+    background: #e8f0fe; border: 1px solid #a8c7fa; border-radius: 10px;
+    padding: 14px 20px; margin-bottom: 16px; font-size: 13px;
+  }
+  .correction-banner strong { color: #1a56db; }
+
+  section { background: #fff; border-radius: 12px; padding: 20px 28px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  section h2 { font-size: 17px; font-weight: 600; margin: 0 0 4px 0; }
+  section .desc { font-size: 13px; color: #666; margin: 0 0 16px 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    background: #f5f5f5; text-align: left; padding: 10px 12px;
+    font-weight: 600; border-bottom: 2px solid #e0e0e0;
+  }
+  tbody td { padding: 10px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+  tbody tr:hover { background: #fafafa; }
+  tbody tr.corrected { background: #f0f7ff; }
+  tbody tr.corrected td:first-child::before { content: "⬆ "; font-size: 11px; }
+
+  .badge { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 20px; font-weight: 500; }
+  .badge-required { background: #fce8e6; color: #b3261e; }
+  .badge-recommended { background: #e8eaf6; color: #1a56db; }
+  .badge-optional { background: #f0f0f0; color: #666; }
+  .badge-local { background: #e6f4ea; color: #1e7e34; }
+
+  .callout {
+    background: #fef7e0; border-left: 4px solid #f9ab00; padding: 14px 18px;
+    border-radius: 8px; margin: 12px 0; font-size: 13px;
+  }
+  .callout strong { color: #b06000; }
+
+  .callout-green {
+    background: #e6f4ea; border-left: 4px solid #34a853; padding: 14px 18px;
+    border-radius: 8px; margin: 12px 0; font-size: 13px;
+  }
+  .callout-green strong { color: #1e7e34; }
+
+  .info-block {
+    background: #f5f5f5; border-radius: 8px; padding: 14px 18px; font-size: 13px; color: #555;
+  }
+  .info-block code { background: #e8e8e8; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+
+  .download-set { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 10px; }
+  .download-item { background: #f9f9f9; border-radius: 8px; padding: 12px 16px; border: 1px solid #eee; }
+  .download-item .order { font-size: 11px; color: #888; }
+  .download-item .name { font-weight: 600; margin: 2px 0; }
+  .download-item .note { font-size: 12px; color: #666; }
+
+  .reading-list { list-style: none; padding: 0; margin: 0; }
+  .reading-list li { padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+  .reading-list li:last-child { border-bottom: none; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .header, section, .card { box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <div>
+    <h1>AB169D / AB16x 系列 · 芯片资源报告</h1>
+    <div class="meta">生成日期: 2026-07-22 &nbsp;|&nbsp; 来源: 官方文档（PDF）+ 项目源码分析</div>
+  </div>
+  <span class="strategy">📄 官方 Datasheet + SDK 手册</span>
+</div>
+
+<!-- 勘误 banner -->
+<div class="correction-banner">
+  <strong>🔍 本次报告已更新</strong> — 基于官方 <code>AB169C_AB169D DataSheet.pdf</code> 和 <code>AB16X_SDK开发手册.pdf</code> 修正了此前版本中的多处数据偏差。<br>
+  <strong>制造商：中科蓝讯 (Bluetrum Technology Co., Ltd.)</strong> — 官网 <a href="http://www.bluetrum.com">www.bluetrum.com</a>
+</div>
+
+<!-- Chip Identity Cards -->
+<div class="cards">
+  <div class="card">
+    <div class="label">芯片型号</div>
+    <div class="value">AB169D</div>
+    <div class="sub">AB16x 系列 · 智能语音控制 SoC</div>
+  </div>
+  <div class="card">
+    <div class="label">制造商</div>
+    <div class="value">中科蓝讯 (Bluetrum)</div>
+    <div class="sub">www.bluetrum.com</div>
+  </div>
+  <div class="card">
+    <div class="label">CPU 内核</div>
+    <div class="value">RISC-V RV32IMAC</div>
+    <div class="sub">32-bit · 160MHz max · DSP 指令</div>
+  </div>
+  <div class="card">
+    <div class="label">Flash / RAM</div>
+    <div class="value">4Mbit (512KB) + 56KB RAM</div>
+    <div class="sub">16KB Cache · 可选 BRAM 4KB</div>
+  </div>
+  <div class="card">
+    <div class="label">封装</div>
+    <div class="value">SOP8</div>
+    <div class="sub">5 个 GPIO · 2.0~5.5V 供电</div>
+  </div>
+  <div class="card">
+    <div class="label">主要特性</div>
+    <div class="value">语音关键词识别 (KWS)</div>
+    <div class="sub">MIC 放大 + Σ-Δ ADC + Class-AB DAC</div>
+  </div>
+</div>
+
+<!-- 芯片识别 -->
+<section>
+  <h2>芯片识别</h2>
+  <p class="desc">AB169D 是 <strong>中科蓝讯 (Bluetrum Technology Co., Ltd.)</strong> 推出的智能语音控制 SoC。</p>
+  <table>
+    <thead><tr><th>项目</th><th>值</th></tr></thead>
+    <tbody>
+      <tr class="corrected">
+        <td><strong>制造商</strong></td>
+        <td><strong>中科蓝讯 (Bluetrum)</strong> — sales@bluetrum.com / project@bluetrum.com</td>
+      </tr>
+      <tr><td><strong>系列</strong></td><td>AB16x 系列</td></tr>
+      <tr>
+        <td><strong>型号对比</strong></td>
+        <td><strong>AB169D</strong>: 4Mbit (512KB) Flash &nbsp;|&nbsp; <strong>AB169C</strong>: 2Mbit (256KB) Flash</td>
+      </tr>
+      <tr class="corrected">
+        <td><strong>CPU</strong></td>
+        <td>RISC-V 32-bit (rv32imac) + DSP 指令, <strong>160MHz max</strong></td>
+      </tr>
+      <tr><td><strong>存储器</strong></td><td>内置 NOR Flash + 56KB SRAM + 16KB Cache</td></tr>
+      <tr><td><strong>音频前端</strong></td><td>内置 MIC 放大器 + 高性能单通道 Σ-Δ ADC + 3bit Class-AB Mono DAC</td></tr>
+      <tr><td><strong>电源管理</strong></td><td>内置 PMU，Capless LDO，1.8V~5.5V 供电范围</td></tr>
+      <tr><td><strong>应用场景</strong></td><td>智能家居、智能玩具、智能照明、语音开关</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 硬件开发资料 -->
+<section>
+  <h2>硬件开发资料</h2>
+  <p class="desc">AB169D 的硬件开发资源，包括引脚定义、电气特性、参考设计等。</p>
+  <table>
+    <thead>
+      <tr><th>优先级</th><th>类别</th><th>资料</th><th>来源</th><th>链接</th><th>备注</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>数据手册</td>
+        <td>AB169C_AB169D DataSheet</td>
+        <td>Bluetrum 官方</td>
+        <td><a href="reference/chip/AB169C_AB169D DataSheet.pdf">本地 PDF</a></td>
+        <td>含引脚定义、电气参数、AC/DC 特性、封装信息</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>SDK 开发手册</td>
+        <td>AB16X SDK 开发手册</td>
+        <td>Bluetrum 官方</td>
+        <td><a href="reference/chip/AB16X_SDK开发手册(1).pdf">本地 PDF</a></td>
+        <td>94 页，涵盖 SDK 结构、外设驱动、硬件设计参考</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>参考原理图</td>
+        <td>SOP8 最小系统参考设计</td>
+        <td>SDK 手册 §1.2~1.3</td>
+        <td><a href="reference/chip/AB16X_SDK开发手册(1).pdf">SDK 手册</a></td>
+        <td>含 MIC 输入、DAC 输出、RC 烧录 4 线连接</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>封装信息</td>
+        <td>SOP8 封装尺寸</td>
+        <td>Datasheet §5</td>
+        <td><a href="reference/chip/AB169C_AB169D DataSheet.pdf">Datasheet</a></td>
+        <td>SOP8 封装，8 引脚</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>引脚分配</td>
+        <td>SOP8 引脚定义表</td>
+        <td>Datasheet §3.2</td>
+        <td><a href="reference/chip/AB169C_AB169D DataSheet.pdf">Datasheet</a></td>
+        <td>8 引脚完整功能复用表（PA0~PA11 内部分组）</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>电气特性</td>
+        <td>PMU / IO / DAC / ADC 参数</td>
+        <td>Datasheet §4</td>
+        <td><a href="reference/chip/AB169C_AB169D DataSheet.pdf">Datasheet</a></td>
+        <td>VDDIO 3.3V @150mA, VDDCORE 1.2V @260mA</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-optional">可选</span></td>
+        <td>硬件设计指南</td>
+        <td>电源 / 时钟 / MIC / Speaker 电路</td>
+        <td>SDK 手册 §6</td>
+        <td><a href="reference/chip/AB16X_SDK开发手册(1).pdf">SDK 手册</a></td>
+        <td>§6.5 SOP8 参考设计、§6.6 MIC 电路、§6.7 Speaker/DAC</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-optional">可选</span></td>
+        <td>Boot 电路</td>
+        <td>BOOT 参考设计</td>
+        <td>SDK 手册 §6.8</td>
+        <td><a href="reference/chip/AB16X_SDK开发手册(1).pdf">SDK 手册</a></td>
+        <td>含 userboot、app.xm、bin 合并、烧录说明</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 软件开发资料 -->
+<section>
+  <h2>软件开发资料</h2>
+  <p class="desc">AB169D 的软件开发资源，包括 SDK、库、示例代码和工具链。</p>
+  <table>
+    <thead>
+      <tr><th>优先级</th><th>类别</th><th>资料</th><th>来源</th><th>链接</th><th>备注</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>SDK/BSP</td>
+        <td>AB16x SDK 完整包</td>
+        <td>Bluetrum 官方</td>
+        <td><code>app/platform/</code></td>
+        <td>本仓库即为 SDK 项目；含 BSP、驱动、库、模块</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>KWS 算法库</td>
+        <td>XYC KWS 关键词识别库</td>
+        <td>XYC（算法合作方）</td>
+        <td><code>modules/zbit_kws/</code></td>
+        <td>XYC-L124-V1-libkws_AB169_128_180k_V3.0.0</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>SDK 开发手册</td>
+        <td>AB16X SDK 开发手册 (PDF)</td>
+        <td>Bluetrum 官方</td>
+        <td><a href="reference/chip/AB16X_SDK开发手册(1).pdf">本地 PDF</a></td>
+        <td>94 页中文，含完整 API 说明和配置指南</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>工具链</td>
+        <td>RISC-V GCC 工具链</td>
+        <td>开源 / Bluetrum</td>
+        <td>SDK 手册 §2.1 指引下载</td>
+        <td>riscv32-elf-gcc，march=rv32imac</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>IDE</td>
+        <td>CodeBlocks 工程</td>
+        <td>Bluetrum 官方</td>
+        <td><code>app-kws.cbp</code></td>
+        <td>预配置 riscv32 编译器</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>示例工程</td>
+        <td>KWS 语音识别示例</td>
+        <td>Bluetrum 官方</td>
+        <td><code>app/projects/zbit_asr/</code></td>
+        <td>完整 KWS 应用：VAD → Mel → DNN → Decode</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>链接脚本</td>
+        <td>RAM 链接脚本 (ram.ld)</td>
+        <td>Bluetrum 官方</td>
+        <td><code>app/projects/zbit_asr/ram.ld</code></td>
+        <td>sram0+sram1+aram+bram 复杂分区</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>KWS 权重</td>
+        <td>weight_mini.bin</td>
+        <td>模型训练 / 厂商</td>
+        <td><code>Output/bin/weight_mini.bin</code></td>
+        <td>~160KB，存放于 Flash 0x11000</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>外设驱动 API</td>
+        <td>BSP 驱动库 + API 头文件</td>
+        <td>Bluetrum 官方</td>
+        <td><code>app/platform/bsp/ + api/</code></td>
+        <td>GPIO / UART / I2C / SPI / ADC / DAC / PWM / IR / Timer / SD / TouchKey</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-optional">可选</span></td>
+        <td>音频编解码</td>
+        <td>libcodecs 编解码库</td>
+        <td>Bluetrum 官方</td>
+        <td><code>app/platform/libs/</code></td>
+        <td>MP3 / WAV / SBC / ESBC 解码</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 烧录编程 / 量产测试资料 -->
+<section>
+  <h2>烧录编程 / 量产测试资料</h2>
+  <p class="desc">AB169D 的固件烧录、调试和量产测试资源。</p>
+  <table>
+    <thead>
+      <tr><th>优先级</th><th>类别</th><th>资料</th><th>来源</th><th>链接</th><th>备注</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>烧录工具</td>
+        <td>AB16X Downloader V2.8</td>
+        <td>Bluetrum 官方</td>
+        <td>SDK 手册 §2.3</td>
+        <td>支持 .dcf / .prd 固件烧录，波特率 1.5M</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>固件格式</td>
+        <td>PRD 固件 + Header</td>
+        <td>Bluetrum 官方</td>
+        <td><code>Output/bin/</code></td>
+        <td>header.bin + app.rv32 → .prd，含授权码校验</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>烧录接线</td>
+        <td>RC 烧录 4 线连接</td>
+        <td>SDK 手册 §1.3</td>
+        <td><a href="reference/chip/AB16X_SDK开发手册(1).pdf">SDK 手册</a></td>
+        <td>PA2(UTX) + PA4(URX) + 3.3V + GND</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-required">必需</span></td>
+        <td>USB 驱动</td>
+        <td>CP210x 驱动</td>
+        <td>SDK 手册 §2.2</td>
+        <td><a href="reference/chip/AB16X_SDK开发手册(1).pdf">SDK 手册</a></td>
+        <td>CP210x_Windows_Drivers，烧录器为 xlink</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>烧录 FAQ</td>
+        <td>常见烧录问题排查</td>
+        <td>SDK 手册 §2.3.3</td>
+        <td><a href="reference/chip/AB16X_SDK开发手册(1).pdf">SDK 手册</a></td>
+        <td>含 IO 上拉、电源、时序等 5 类问题解决</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>Boot 升级</td>
+        <td>二次 BOOT 升级说明</td>
+        <td>SDK 手册 §6.8</td>
+        <td><a href="reference/chip/AB16X_SDK开发手册(1).pdf">SDK 手册</a></td>
+        <td>userboot 机制、app.xm、bin 合并流程</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-recommended">推荐</span></td>
+        <td>EFUSE 配置</td>
+        <td>EFUSE 使用说明</td>
+        <td>SDK 手册 §6.9</td>
+        <td><a href="reference/chip/AB16X_SDK开发手册(1).pdf">SDK 手册</a></td>
+        <td>芯片配置烧录</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-optional">可选</span></td>
+        <td>产测校准</td>
+        <td>MIC / 音频产测说明</td>
+        <td>厂商提供</td>
+        <td><em>需联系厂商</em></td>
+        <td>MIC 增益校准、VAD 阈值调整</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 最小下载集 -->
+<section>
+  <h2>最小下载集</h2>
+  <p class="desc">开发 AB169D 所需的最小资源集合：</p>
+  <div class="download-set">
+    <div class="download-item">
+      <div class="order">①</div>
+      <div class="name">AB169C_AB169D DataSheet</div>
+      <div class="note">产品特性、引脚定义、电气参数<br><a href="reference/chip/AB169C_AB169D DataSheet.pdf">📄 本地文件</a></div>
+    </div>
+    <div class="download-item">
+      <div class="order">②</div>
+      <div class="name">AB16X SDK 开发手册</div>
+      <div class="note">SDK 使用、外设驱动、硬件设计参考<br><a href="reference/chip/AB16X_SDK开发手册(1).pdf">📄 本地文件</a></div>
+    </div>
+    <div class="download-item">
+      <div class="order">③</div>
+      <div class="name">AB16x SDK (本仓库)</div>
+      <div class="note">BSP + 驱动 + KWS 库 + 示例<br>路径: <code>app/</code></div>
+    </div>
+    <div class="download-item">
+      <div class="order">④</div>
+      <div class="name">RISC-V GCC 工具链</div>
+      <div class="note">riscv32-elf-gcc<br><code>-march=rv32imac -Os</code></div>
+    </div>
+    <div class="download-item">
+      <div class="order">⑤</div>
+      <div class="name">Downloader V2.8</div>
+      <div class="note">AB16X 烧录工具<br>含 CP210x USB 驱动</div>
+    </div>
+    <div class="download-item">
+      <div class="order">⑥</div>
+      <div class="name">CodeBlocks IDE</div>
+      <div class="note">含 riscv32 编译器插件<br>工程: <code>app-kws.cbp</code></div>
+    </div>
+  </div>
+</section>
+
+<!-- 推荐阅读顺序 -->
+<section>
+  <h2>推荐阅读顺序</h2>
+  <p class="desc">按顺序查阅以下资料以快速上手 AB169D 开发：</p>
+  <ol class="reading-list">
+    <li><strong>AB169C_AB169D DataSheet</strong> — 了解芯片特性、引脚分配、电气参数</li>
+    <li><strong>AB16X SDK 开发手册 §1</strong> — 芯片简介、参考原理图、RC 烧录接线</li>
+    <li><strong>AB16X SDK 开发手册 §2</strong> — 搭建开发环境（CodeBlocks + 工具链 + Downloader）</li>
+    <li><strong>AB16X SDK 开发手册 §4</strong> — SDK 项目结构、配置、内存布局</li>
+    <li><strong>AB16X SDK 开发手册 §5</strong> — 各外设驱动 API 使用（GPIO/ADC/DAC/UART/I2C/SPI/PWM 等）</li>
+    <li><strong>项目代码 bsp_asr.c</strong> — 理解 KWS 完整流程（VAD → Mel → DNN → Decode）</li>
+    <li><strong>config.h</strong> — 系统配置：时钟 160MHz、ASR 参数、外设开关</li>
+    <li><strong>ram.ld</strong> — 链接脚本：com/bank 机制、RAM 分区规划</li>
+    <li><strong>AB16X SDK 开发手册 §6</strong> — 硬件设计参考 + BOOT 升级 + EFUSE</li>
+  </ol>
+</section>
+
+<!-- 缺失或风险项 -->
+<section>
+  <h2>缺失或风险项</h2>
+  <div class="callout-green">
+    <strong>✅ 已覆盖完成项</strong> — 以下项目已在本地 PDF 文档中找到：数据手册、制造商信息、参考原理图、烧录工具、Boot 升级、外设 API 说明。
+  </div>
+  <table>
+    <thead><tr><th>缺失/风险项</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>勘误表 (Errata)</td>
+        <td>两个 PDF 均未包含芯片勘误信息；建议联系 Bluetrum 获取</td>
+      </tr>
+      <tr>
+        <td>评估板购买链接</td>
+        <td>文档未提及评估板型号或购买渠道</td>
+      </tr>
+      <tr>
+        <td>在线 Wiki / 论坛</td>
+        <td>未发现公开的在线技术社区；技术支持邮箱 project@bluetrum.com</td>
+      </tr>
+      <tr>
+        <td>IDE 工具链下载链接</td>
+        <td>SDK 手册提及 RV32-Toolchain 但未提供直接下载 URL</td>
+      </tr>
+      <tr>
+        <td>XYC 算法库授权</td>
+        <td>KWS 库为第三方算法（XYC），可能需要单独授权</td>
+      </tr>
+      <tr>
+        <td>SDK 配置与实际芯片差异</td>
+        <td>项目 config.h 设 SYS_CLK_SEL = SYS_192M，但 Datasheet 标称最大 160MHz，需核实</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 检索证据 -->
+<section>
+  <h2>检索证据</h2>
+  <div class="info-block">
+    <p><strong>信息来源：</strong></p>
+    <ul>
+      <li><strong>AB169C_AB169D DataSheet.pdf</strong> (v0.0.2, 2024-12-20) — 中科蓝讯官方数据手册，12 页</li>
+      <li><strong>AB16X_SDK开发手册(1).pdf</strong> (v0.0.1, 2025-03-21) — 中科蓝讯官方 SDK 开发手册，94 页</li>
+      <li><strong>项目源码分析</strong> — config.h, ram.ld, sfr.h, app-kws.cbp</li>
+    </ul>
+    <p><strong>厂商联系方式（从 Datasheet 获取）：</strong></p>
+    <ul>
+      <li>官网: <a href="http://www.bluetrum.com">www.bluetrum.com</a></li>
+      <li>销售: sales@bluetrum.com</li>
+      <li>技术支持: project@bluetrum.com</li>
+    </ul>
+    <p><strong>建议检索关键词：</strong></p>
+    <code>Bluetrum AB169D</code> · <code>中科蓝讯 AB16X</code> · <code>AB169C AB169D Datasheet</code> · <code>Bluetrum RISC-V SoC</code>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

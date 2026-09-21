@@ -1,0 +1,4 @@
+interface:
+  display_name: "Embedded Minimal Project Builder"
+  short_description: "Create AI-driven minimal firmware projects."
+  default_prompt: "Use $embedded-minimal-project-builder to create an AI-driven minimal firmware project from my datasheets, schematics, examples, and build notes."

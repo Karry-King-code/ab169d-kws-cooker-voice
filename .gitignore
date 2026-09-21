@@ -1,0 +1,28 @@
+.vscode
+*.o
+*.depend
+*.layout
+obj/
+objs/
+.vscode/
+.captures/
+.claude/
+*.zip
+sdk/
+skills/
+_*.txt
+key_serial_test.log
+_*.png
+/captures_*/
+libkws_AB169_436_180k_V3.1.0_cn_wd19_LimitedTime_9fdde00_20260722_112037.*
+zbitkws.h
+zbitkws/~$*.xlsx
+# ===== 客户资料/版权手册/旧算法库(2026-09-04 移至桌面备份, 禁止上传) =====
+reference/chip/
+reference/customer goals/
+reference/datasheets/
+reference/12/
+reference/algorithm library/
+reference/test/
+reference/schematics/*.pdf
+zbitkws/
