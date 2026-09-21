@@ -26,3 +26,10 @@ reference/algorithm library/
 reference/test/
 reference/schematics/*.pdf
 zbitkws/
+# ===== 2026-09-21 下架: 内部文档/原理图分析/AI工具链(公开仓库不收录) =====
+CLAUDE.md
+chip-resource-*.html
+schematic-analysis-*.md
+reference/schematics/
+.ai/
+.claude/

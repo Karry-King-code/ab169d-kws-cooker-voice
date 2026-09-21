@@ -1,4 +1,0 @@
-interface:
-  display_name: "Embedded LLM Guardrails"
-  short_description: "Set safety boundaries for LLM-assisted embedded code changes."
-  default_prompt: "Use $embedded-llm-guardrails to initialize or audit LLM safety boundaries for this embedded firmware project."
